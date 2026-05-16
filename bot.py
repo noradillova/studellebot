@@ -32,6 +32,7 @@ bot = telebot.TeleBot(TOKEN)
 
 user_states = {}
 current_quiz = {}
+asked_quizzes = {}
 
 QUOTES = [
     "Keep going, you are doing great! 🚀",
@@ -322,8 +323,15 @@ def start_quiz(call):
             bot.send_message(call.message.chat.id, "❌ No quizzes yet. Add them in admin panel.")
             return
         bot.answer_callback_query(call.id)
-        q = random.choice(quizzes)
-        current_quiz[call.message.chat.id] = q
+        chat_id = call.message.chat.id
+already_asked = asked_quizzes.get(chat_id, [])
+remaining = [q for q in quizzes if q.id not in already_asked]
+if not remaining:
+    asked_quizzes[chat_id] = []
+    remaining = quizzes
+q = random.choice(remaining)
+asked_quizzes[chat_id] = already_asked + [q.id]
+current_quiz[chat_id] = q
         options = [q.option1, q.option2, q.option3]
         random.shuffle(options)
         kb = InlineKeyboardMarkup()
