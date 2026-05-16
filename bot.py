@@ -76,6 +76,41 @@ def seed_courses():
     for name, emoji in courses:
         Course.objects.get_or_create(name=name, defaults={"emoji": emoji})
 
+def seed_quizzes():
+    quizzes = [
+        ("Programming", "What does HTML stand for?", "HyperText Markup Language", "High Tech Modern Language", "Home Tool Markup Language", "HyperText Markup Language"),
+        ("Programming", "Which symbol is used for comments in Python?", "#", "//", "/*", "#"),
+        ("Programming", "What is a variable?", "A container for storing data", "A type of loop", "A function", "A container for storing data"),
+        ("Programming", "What does CSS stand for?", "Cascading Style Sheets", "Computer Style System", "Creative Style Sheets", "Cascading Style Sheets"),
+        ("Programming", "Which of these is a Python data type?", "list", "table", "array", "list"),
+        ("Math", "What is 15% of 200?", "30", "25", "35", "30"),
+        ("Math", "What is the square root of 144?", "12", "14", "11", "12"),
+        ("Math", "What is 2 to the power of 8?", "256", "128", "512", "256"),
+        ("Math", "How many degrees are in a triangle?", "180", "360", "90", "180"),
+        ("Math", "What is the value of Pi (2 decimal places)?", "3.14", "3.12", "3.16", "3.14"),
+        ("English", "Which is the correct sentence?", "She don't like coffee", "She doesn't like coffee", "She not like coffee", "She doesn't like coffee"),
+        ("English", "What is the past tense of 'go'?", "went", "goed", "gone", "went"),
+        ("English", "Which word means 'happy'?", "joyful", "angry", "sad", "joyful"),
+        ("English", "What is the plural of 'child'?", "children", "childs", "childen", "children"),
+        ("English", "Which is a preposition?", "under", "run", "happy", "under"),
+        ("Productivity", "What is the Pomodoro technique?", "25 min work + 5 min break", "1 hour work + 10 min break", "45 min work + 15 min break", "25 min work + 5 min break"),
+        ("Productivity", "What does SMART goal stand for?", "Specific Measurable Achievable Relevant Time-bound", "Simple Modern Adaptable Real Timely", "Strong Motivated Accurate Reliable Tested", "Specific Measurable Achievable Relevant Time-bound"),
+        ("Productivity", "What is time blocking?", "Scheduling specific tasks for specific times", "Blocking social media", "Taking breaks", "Scheduling specific tasks for specific times"),
+    ]
+    for course_name, question, opt1, opt2, opt3, answer in quizzes:
+        course = Course.objects.filter(name=course_name).first()
+        if course:
+            Quiz.objects.get_or_create(
+                question=question,
+                course=course,
+                defaults={
+                    "option1": opt1,
+                    "option2": opt2,
+                    "option3": opt3,
+                    "answer": answer,
+                }
+            )
+
 def seed_tasks(user):
     default_tasks = [
         ("Finish Python basics", "Programming", "easy"),
@@ -158,11 +193,11 @@ def cmd_start(msg):
 def cmd_help(msg):
     text = (
         "📖 *StudyBot — Help*\n\n"
-        "/start — запуск\n"
-        "/help — помощь\n"
-        "/ask — вопрос AI\n"
-        "/stats — статистика\n"
-        "/history — история\n\n"
+        "/start\n"
+        "/help\n"
+        "/ask\n"
+        "/stats\n"
+        "/history\n\n"
         "📚 Courses · 📝 Tasks · 🧠 Quizzes\n"
         "📒 Notes · 📈 Progress · 👤 Profile\n"
         "📅 Today Plan · 🏆 Top Users · 🤖 AI Help"
@@ -557,6 +592,7 @@ def unknown_message(msg):
 if __name__ == "__main__":
     logger.info("StudyBot starting...")
     seed_courses()
+    seed_quizzes()
     while True:
         try:
             logger.info("Bot is running...")
