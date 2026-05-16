@@ -66,6 +66,16 @@ def get_or_create_user(msg):
 def save_message(user, text, is_from_user=True):
     Message.objects.create(user=user, text=text[:500], is_from_user=is_from_user)
 
+def seed_courses():
+    courses = [
+        ("Programming", "💻"),
+        ("Math", "📐"),
+        ("English", "🇬🇧"),
+        ("Productivity", "🧠"),
+    ]
+    for name, emoji in courses:
+        Course.objects.get_or_create(name=name, defaults={"emoji": emoji})
+
 def seed_tasks(user):
     default_tasks = [
         ("Finish Python basics", "Programming", "easy"),
@@ -546,6 +556,7 @@ def unknown_message(msg):
 
 if __name__ == "__main__":
     logger.info("StudyBot starting...")
+    seed_courses()
     while True:
         try:
             logger.info("Bot is running...")
