@@ -1,0 +1,4 @@
+django
+pyTelegramBotAPI
+python-dotenv
+anthropic
