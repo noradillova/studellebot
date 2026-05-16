@@ -3,10 +3,10 @@ import anthropic
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-SYSTEM_PROMPT = """You are an AI assistant in the StudyBot educational Telegram bot.
-You help students with their studies: explain topics, help with tasks,
-answer questions about programming, math, English and productivity.
-Keep answers short (max 3-4 paragraphs), use examples.
+SYSTEM_PROMPT = """You are a helpful AI assistant in the StudyBot Telegram bot.
+You help students with any questions they have - studying, programming, math, 
+English, productivity, or any other topic.
+Keep answers clear and concise (max 3-4 paragraphs), use examples when helpful.
 Reply in the same language the question was asked in."""
 
 def ask_ai(question: str, user) -> str:
